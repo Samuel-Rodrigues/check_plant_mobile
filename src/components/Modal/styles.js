@@ -29,7 +29,7 @@ export const Body = styled.View`
   min-height: 100px;
   align-self: center;
   margin-top: 20px;
-  padding: 0 20px;
+  padding: 5px 20px;
 `;
 
 export const TInput = styled(Input)`

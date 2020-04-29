@@ -6,7 +6,7 @@ export const Container = styled.View`
   border-radius: 4px;
   flex-direction: row;
   max-width: 300px;
-  min-height: 60px;
+  min-height: 40px;
 `;
 
 export const TInput = styled.TextInput.attrs({

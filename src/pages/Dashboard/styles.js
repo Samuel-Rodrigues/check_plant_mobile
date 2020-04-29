@@ -1,4 +1,29 @@
 import {StyleSheet} from 'react-native';
+import styled from 'styled-components';
+
+export const ContainerCallout = styled.View`
+  max-width: 250px;
+  justify-content: center;
+  align-self: center;
+  margin: 10px;
+`;
+
+export const DateCallout = styled.Text`
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+export const TextCallout = styled.Text`
+  font-size: 14px;
+`;
+
+export const Menu = styled.View`
+  background-color: #eee;
+  margin: 0px 30px;
+  justify-content: space-between;
+  flex-direction: row;
+`;
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,20 +32,6 @@ export const styles = StyleSheet.create({
   map: {
     height: '100%',
     width: '100%',
-  },
-  logo: {
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    paddingHorizontal: 15,
-    elevation: 5,
-    marginTop: -730,
-    alignSelf: 'center',
-    marginRight: 10,
-    flexDirection: 'row',
-  },
-  logoText: {
-    fontWeight: 'bold',
-    fontSize: 22,
   },
   positonBox: {
     backgroundColor: '#fff',
@@ -32,17 +43,23 @@ export const styles = StyleSheet.create({
     shadowColor: '#000',
     elevation: 5,
   },
-  positonBoxTitle: {
-    textAlign: 'center',
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#e74c3c',
-  },
   positonBoxLatLon: {flexDirection: 'row', justifyContent: 'space-between'},
   locationButton: {
-    backgroundColor: '#e74c3c',
+    backgroundColor: '#A7C410',
     borderRadius: 150,
-    marginTop: -25,
+    marginTop: -100,
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: 8,
+  },
+  syncButton: {
+    backgroundColor: '#446FEA',
+    borderRadius: 150,
+    marginTop: -100,
     width: 50,
     height: 50,
     alignSelf: 'center',

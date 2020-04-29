@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Alert} from 'react-native';
 
 import Modal from 'react-native-modal';
 import {
@@ -12,18 +13,34 @@ import {
   SendButton,
 } from './styles';
 
-function MyModal({visible, toggleModal}) {
+function MyModal({visible, toggleModal, create}) {
+  const [annotation, setAnnotation] = useState('');
+
+  function sendAnnotation() {
+    if (annotation === '') {
+      Alert.alert('Ops..', 'Campo em branco');
+      return;
+    }
+    create(annotation);
+    setAnnotation('');
+    toggleModal();
+  }
+
   return (
     <Modal isVisible={visible}>
       <Container>
         <Card>
           <Body>
             <Title>Faça uma anotação</Title>
-            <TInput placeholder="Anote aqui" />
+            <TInput
+              value={annotation}
+              onChangeText={setAnnotation}
+              placeholder="Anote aqui"
+            />
           </Body>
           <Footer>
-            <CloseButton onPress={toggleModal}>Fechar</CloseButton>
-            <SendButton>Enviar</SendButton>
+            <CloseButton onPress={toggleModal}>Cancelar</CloseButton>
+            <SendButton onPress={sendAnnotation}>Enviar</SendButton>
           </Footer>
         </Card>
       </Container>

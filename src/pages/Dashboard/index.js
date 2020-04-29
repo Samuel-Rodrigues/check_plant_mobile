@@ -1,22 +1,41 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   Alert,
   PermissionsAndroid,
   Platform,
 } from 'react-native';
 
-import MapView, {Marker} from 'react-native-maps';
+import {useSelector, useDispatch} from 'react-redux';
+import MapView, {Marker, Callout} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {format} from 'date-fns';
 
-import {styles} from './styles';
+import {
+  createAnnotation,
+  deleteAllAnnotation,
+  synchronizeAnnotationRequest,
+  startingSynchronization,
+} from '../../store/modules/annotation/actions';
+
+import {
+  styles,
+  ContainerCallout,
+  TextCallout,
+  DateCallout,
+  Menu,
+} from './styles';
 
 import MyModal from '../../components/Modal/index';
 
 function Dashboard({navigation}) {
+  const annotations = useSelector((state) => state.annotation.annotations);
+  const [notPosted, setNotPosted] = useState(0);
+
+  const dispatch = useDispatch();
+
   navigation.setOptions({
     headerTransparent: true,
     title: '',
@@ -26,14 +45,26 @@ function Dashboard({navigation}) {
     latitude: -3.7497319,
     longitude: -38.5513689,
     latitudeDelta: 0.0042,
-    longitudeDelta: 0.092,
+    longitudeDelta: 0.042,
   });
 
-  const [isModalVisible, setIsModalVisible] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    //getLocationAllPlatform();
+    getLocationAllPlatform();
   }, []);
+
+  useEffect(() => {
+    let count = 0;
+
+    annotations.forEach((element) => {
+      if (element.post === false) {
+        count++;
+      }
+    });
+    setNotPosted(count);
+    console.tron.log(notPosted);
+  }, [annotations]);
 
   function getLocationAllPlatform() {
     if (Platform.OS === 'android') {
@@ -41,6 +72,10 @@ function Dashboard({navigation}) {
     } else {
       getLocation();
     }
+  }
+
+  function deleteAnnotation() {
+    dispatch(deleteAllAnnotation());
   }
 
   function getLocation() {
@@ -59,6 +94,30 @@ function Dashboard({navigation}) {
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
+  }
+
+  function synchronize() {
+    annotations.forEach((annotation) => {
+      if (annotation.post === null) {
+        dispatch(startingSynchronization());
+        dispatch(synchronizeAnnotationRequest());
+      }
+    });
+    //dispatch(postAnnotationRequest());
+  }
+
+  function create(annotatioN) {
+    getLocation();
+
+    const newAnnotation = {
+      annotation: annotatioN,
+      latitude: position.latitude,
+      longitude: position.longitude,
+      datetime: format(new Date(), 'yyyy/MM/dd HH:mm:ss'),
+      post: false,
+    };
+
+    dispatch(createAnnotation(newAnnotation));
   }
 
   const requestPermissionLocateAndoid = async () => {
@@ -87,35 +146,55 @@ function Dashboard({navigation}) {
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={position}>
-        <Marker
-          coordinate={position}
-          title={'Marcador'}
-          description={'Testando o marcador no mapa'}
-        />
+        {annotations.map((annotation) => {
+          return (
+            <Marker
+              key={annotation.datetime}
+              coordinate={{
+                latitude: Number(annotation.latitude),
+                longitude: Number(annotation.longitude),
+              }}
+              title={annotation.datetime}
+              pinColor={annotation.post ? '#999' : '#119911'}>
+              <Callout>
+                <ContainerCallout>
+                  <DateCallout>{annotation.datetime}</DateCallout>
+                  <TextCallout>{annotation.annotation}</TextCallout>
+                </ContainerCallout>
+              </Callout>
+            </Marker>
+          );
+        })}
       </MapView>
-      <View style={styles.positonBox}>
-        <Text style={styles.positonBoxTitle}>Sua Localização</Text>
-        <View style={styles.positonBoxLatLon}>
-          <Text style={{fontSize: 18}}>Lat.</Text>
-          <Text style={{fontSize: 18}}>{position.latitude}</Text>
-        </View>
-        <View style={styles.positonBoxLatLon}>
-          <Text style={{fontSize: 18}}>Lon.</Text>
-          <Text style={{fontSize: 18}}>{position.longitude}</Text>
-        </View>
-      </View>
-      <TouchableOpacity
-        style={styles.locationButton}
-        onPress={() => {
-          getLocationAllPlatform();
-        }}>
-        <Icon name="my-location" color={'#fff'} size={30} />
-      </TouchableOpacity>
-      <View style={styles.logo}>
-        <Text style={[styles.logoText, {color: '#e74c3c'}]}>5</Text>
-        <Text style={styles.logoText}> Anotações pendentes</Text>
-      </View>
-      <MyModal visible={isModalVisible} toggleModal={toggleModal} />
+
+      <Menu>
+        <TouchableOpacity
+          style={styles.locationButton}
+          onPress={() => {
+            toggleModal();
+          }}>
+          <Icon name="add-location" color={'#fff'} size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.syncButton}
+          onPress={() => {
+            getLocationAllPlatform();
+          }}>
+          <Icon name="sync" color={'#fff'} size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.syncButton}
+          onPress={() => {
+            deleteAnnotation();
+          }}>
+          <Icon name="delete" color={'#fff'} size={30} />
+        </TouchableOpacity>
+      </Menu>
+      <MyModal
+        visible={isModalVisible}
+        toggleModal={toggleModal}
+        create={create}
+      />
     </View>
   );
 }

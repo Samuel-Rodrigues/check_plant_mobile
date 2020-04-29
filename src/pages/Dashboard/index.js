@@ -3,15 +3,18 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Alert,
   PermissionsAndroid,
   Platform,
 } from 'react-native';
 
-import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker} from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import {styles} from './styles';
+
+import MyModal from '../../components/Modal/index';
 
 function Dashboard({navigation}) {
   navigation.setOptions({
@@ -26,8 +29,10 @@ function Dashboard({navigation}) {
     longitudeDelta: 0.092,
   });
 
+  const [isModalVisible, setIsModalVisible] = useState(true);
+
   useEffect(() => {
-    // getLocationAllPlatform();
+    //getLocationAllPlatform();
   }, []);
 
   function getLocationAllPlatform() {
@@ -75,6 +80,10 @@ function Dashboard({navigation}) {
     }
   };
 
+  //Modal
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={position}>
@@ -106,61 +115,9 @@ function Dashboard({navigation}) {
         <Text style={[styles.logoText, {color: '#e74c3c'}]}>5</Text>
         <Text style={styles.logoText}> Anotações pendentes</Text>
       </View>
+      <MyModal visible={isModalVisible} toggleModal={toggleModal} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    height: '100%',
-    width: '100%',
-  },
-  logo: {
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    paddingHorizontal: 15,
-    elevation: 5,
-    marginTop: -730,
-    alignSelf: 'center',
-    marginRight: 10,
-    flexDirection: 'row',
-  },
-  logoText: {
-    fontWeight: 'bold',
-    fontSize: 22,
-  },
-  positonBox: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    opacity: 0.75,
-    marginTop: -170,
-    marginHorizontal: 40,
-    padding: 25,
-    shadowColor: '#000',
-    elevation: 5,
-  },
-  positonBoxTitle: {
-    textAlign: 'center',
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#e74c3c',
-  },
-  positonBoxLatLon: {flexDirection: 'row', justifyContent: 'space-between'},
-  locationButton: {
-    backgroundColor: '#e74c3c',
-    borderRadius: 150,
-    marginTop: -25,
-    width: 50,
-    height: 50,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    elevation: 8,
-  },
-});
 
 export default Dashboard;

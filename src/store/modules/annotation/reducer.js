@@ -11,18 +11,21 @@ export default function annotation(state = INITIAL_STATE, action) {
   switch (action.type) {
     case '@annotation/STARTING_SYNCHRONIZATION':
       return produce(state, (draft) => {
-        draft.annotations = true;
+        draft.synchronizing = true;
+      });
+
+    case '@annotation/END_SYNCHRONIZATION':
+      return produce(state, (draft) => {
+        draft.synchronizing = false;
       });
 
     case '@annotation/SYNCHRONIZE_ANNOTATION_SUCCESS':
       return produce(state, (draft) => {
-        //
-        const annotationsUpdate = draft.map((annotation) => {
+        draft.annotations.map((annotation) => {
           if (annotation.datetime === action.payload.datetime) {
             annotation.post = true;
           }
         });
-        draft.annotations = annotationsUpdate;
       });
 
     case '@annotation/CREATE':

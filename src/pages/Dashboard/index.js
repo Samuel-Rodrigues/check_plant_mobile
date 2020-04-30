@@ -15,10 +15,13 @@ import {format} from 'date-fns';
 
 import {
   createAnnotation,
+  endSynchronization,
   deleteAllAnnotation,
-  synchronizeAnnotationRequest,
   startingSynchronization,
+  synchronizeAnnotationSuccess,
 } from '../../store/modules/annotation/actions';
+
+import api from '../../service/api';
 
 import {
   styles,
@@ -97,13 +100,29 @@ function Dashboard({navigation}) {
   }
 
   function synchronize() {
-    annotations.forEach((annotation) => {
-      if (annotation.post === null) {
+    annotations.map(async function (annotation) {
+      if (!annotation.post) {
         dispatch(startingSynchronization());
-        dispatch(synchronizeAnnotationRequest());
+        try {
+          await api.post(null, annotation, {
+            params: {
+              email_key: 'carlossamuel.rodrigues@gmail.com',
+            },
+          });
+          dispatch(synchronizeAnnotationSuccess(annotation));
+        } catch (err) {
+          console.tron.log('erro', err);
+          Alert.alert(
+            'Erro ao sincronizar',
+            'Conecte a internet para sincronizar. Não se preocupe, suas anotações estão salvas no seu dispositivo',
+          );
+          dispatch(endSynchronization());
+        }
+      } else {
+        Alert.alert('Info', 'Não há nada para sincronizar =) ');
       }
     });
-    //dispatch(postAnnotationRequest());
+    dispatch(endSynchronization());
   }
 
   function create(annotatioN) {
@@ -178,7 +197,7 @@ function Dashboard({navigation}) {
         <TouchableOpacity
           style={styles.syncButton}
           onPress={() => {
-            getLocationAllPlatform();
+            synchronize();
           }}>
           <Icon name="sync" color={'#fff'} size={30} />
         </TouchableOpacity>

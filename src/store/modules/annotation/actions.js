@@ -4,10 +4,9 @@ export function startingSynchronization() {
   };
 }
 
-export function synchronizeAnnotationRequest(data) {
+export function endSynchronization() {
   return {
-    type: '@annotation/SYNCHRONIZE_ANNOTATION_REQUEST',
-    payload: data,
+    type: '@annotation/END_SYNCHRONIZATION',
   };
 }
 

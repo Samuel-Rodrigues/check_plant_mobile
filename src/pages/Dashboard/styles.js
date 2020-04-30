@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import styled from 'styled-components';
 
 export const ContainerCallout = styled.View`
-  max-width: 250px;
+  max-width: 400px;
   justify-content: center;
   align-self: center;
   margin: 10px;
@@ -19,7 +19,6 @@ export const TextCallout = styled.Text`
 `;
 
 export const Menu = styled.View`
-  background-color: #eee;
   margin: 0px 30px;
   justify-content: space-between;
   flex-direction: row;
@@ -33,17 +32,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-  positonBox: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    opacity: 0.75,
-    marginTop: -170,
-    marginHorizontal: 40,
-    padding: 25,
-    shadowColor: '#000',
-    elevation: 5,
-  },
-  positonBoxLatLon: {flexDirection: 'row', justifyContent: 'space-between'},
+
   locationButton: {
     backgroundColor: '#A7C410',
     borderRadius: 150,

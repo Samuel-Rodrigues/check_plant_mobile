@@ -15,7 +15,6 @@ import {format} from 'date-fns';
 
 import {
   createAnnotation,
-  deleteAllAnnotation,
   synchronizeAnnotationSuccess,
 } from '../../store/modules/annotation/actions';
 import api from '../../service/api';
@@ -31,8 +30,12 @@ import ModalLoading from '../../components/Loading/index';
 
 function Dashboard({navigation}) {
   const annotations = useSelector((state) => state.annotation.annotations);
+
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const dispatch = useDispatch();
+
+  const pinColorGreen = '#119911';
+  const pinColorGray = Platform.OS === 'ios' ? '#999' : 'linen';
 
   navigation.setOptions({
     headerTransparent: true,
@@ -58,10 +61,6 @@ function Dashboard({navigation}) {
     } else {
       getLocation();
     }
-  }
-
-  function deleteAnnotation() {
-    dispatch(deleteAllAnnotation());
   }
 
   function getLocation() {
@@ -91,7 +90,7 @@ function Dashboard({navigation}) {
         try {
           await api.post(null, annotation, {
             params: {
-              email_key: 'rodrigues@gmail.com',
+              email_key: 'carlossamuel.rodrigues@gmail.com',
             },
           });
           dispatch(synchronizeAnnotationSuccess(annotation));
@@ -106,9 +105,8 @@ function Dashboard({navigation}) {
       }
     });
     if (count <= 0) {
-      // Alert.alert('Tudo certo', 'Suas anotações já estão sincronizadas');
-    } else {
-      //Alert.alert('Sincronizado', `${count} anotação(s) sincronizada(s)`);
+      Alert.alert('Tudo certo', 'Não há nada para sincronizar');
+      console.log('LISTA ', annotations);
     }
   }
 
@@ -145,7 +143,6 @@ function Dashboard({navigation}) {
     }
   };
 
-  //Modal
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
@@ -158,14 +155,19 @@ function Dashboard({navigation}) {
             <Marker
               key={annotation.datetime}
               coordinate={{
-                latitude: Number(annotation.latitude),
-                longitude: Number(annotation.longitude),
+                latitude: annotation.latitude,
+                longitude: annotation.longitude,
               }}
               title={annotation.datetime}
-              pinColor={annotation.post ? '#999' : '#119911'}>
+              pinColor={!annotation.post ? pinColorGreen : pinColorGray}>
               <Callout>
                 <ContainerCallout>
-                  <DateCallout>{annotation.datetime}</DateCallout>
+                  <DateCallout>
+                    {format(
+                      new Date(annotation.datetime),
+                      "dd/MM/yy - 'às' HH:mm:ss 'horas'",
+                    )}
+                  </DateCallout>
                   <TextCallout>{annotation.annotation}</TextCallout>
                 </ContainerCallout>
               </Callout>
@@ -187,13 +189,6 @@ function Dashboard({navigation}) {
             synchronize();
           }}>
           <Icon name="sync" color={'#fff'} size={30} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.syncButton}
-          onPress={() => {
-            deleteAnnotation();
-          }}>
-          <Icon name="delete" color={'#fff'} size={30} />
         </TouchableOpacity>
       </Menu>
       <MyModal

@@ -26,7 +26,6 @@ export function loading(status) {
   if (status) {
     Toast.showLoading('Sincronização em andamento...');
   } else {
-    console.tron.log('FECHAR TOAST');
     Toast.hide();
   }
 }

@@ -4,23 +4,10 @@ import * as Toast from '../../../components/Toast/index';
 
 const INITIAL_STATE = {
   annotations: [],
-  synchronizing: false,
 };
 
 export default function annotation(state = INITIAL_STATE, action) {
   switch (action.type) {
-    /* case '@annotation/STARTING_SYNCHRONIZATION':
-      return produce(state, (draft) => {
-        draft.synchronizing = true;
-        Toast.loading(true);
-      });
-
-    case '@annotation/END_SYNCHRONIZATION':
-      return produce(state, (draft) => {
-        Toast.loading(false);
-        draft.synchronizing = false;
-      });
-*/
     case '@annotation/SYNCHRONIZE_ANNOTATION_SUCCESS':
       return produce(state, (draft) => {
         draft.annotations.map((annotation) => {
@@ -35,10 +22,12 @@ export default function annotation(state = INITIAL_STATE, action) {
         draft.annotations.push(action.payload);
         Toast.successIcon('Criado');
       });
+    /*
     case '@annotation/DELETE':
       return produce(state, (daft) => {
         daft.annotations = [];
       });
+      */
     default:
       return state;
   }

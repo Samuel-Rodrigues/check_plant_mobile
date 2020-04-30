@@ -9,7 +9,8 @@ import {
   Title,
   TInput,
   Footer,
-  CloseButton,
+  BUtton,
+  StyledCloseButton,
   SendButton,
 } from './styles';
 
@@ -38,9 +39,14 @@ function MyModal({visible, toggleModal, create}) {
               placeholder="Anote aqui"
             />
           </Body>
+
           <Footer>
-            <CloseButton onPress={toggleModal}>Cancelar</CloseButton>
-            <SendButton onPress={sendAnnotation}>Enviar</SendButton>
+            <BUtton onPress={toggleModal}>
+              <StyledCloseButton>Cancelar</StyledCloseButton>
+            </BUtton>
+            <BUtton onPress={sendAnnotation}>
+              <SendButton>Enviar</SendButton>
+            </BUtton>
           </Footer>
         </Card>
       </Container>

@@ -37,6 +37,8 @@ target 'check_plant_mobile' do
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   target 'check_plant_mobileTests' do
     inherit! :search_paths
     # Pods for testing

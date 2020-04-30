@@ -45,18 +45,34 @@ export const Footer = styled.View`
   padding: 20px 5px;
 `;
 
-export const CloseButton = styled(Button).attrs({})`
-  background: #999;
+export const BUtton = styled.TouchableOpacity`
+  border-radius: 4px;
+  opacity: 1;
+  height: 45px;
   flex: 1;
   margin-top: 15px;
   align-self: flex-end;
   margin: 5px;
 `;
 
-export const SendButton = styled(Button).attrs({})`
+export const StyledCloseButton = styled(Button)`
+  background: #999;
+  flex: 1;
+  align-self: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+export const SendButton = styled(Button)`
   background: #9dbc13;
   flex: 1;
-  margin-top: 15px;
-  align-self: flex-end;
-  margin: 5px;
+  align-self: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 `;

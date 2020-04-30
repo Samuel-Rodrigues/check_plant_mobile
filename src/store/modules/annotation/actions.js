@@ -1,4 +1,4 @@
-export function startingSynchronization() {
+/*export function startingSynchronization() {
   return {
     type: '@annotation/STARTING_SYNCHRONIZATION',
   };
@@ -8,7 +8,7 @@ export function endSynchronization() {
   return {
     type: '@annotation/END_SYNCHRONIZATION',
   };
-}
+} */
 
 export function synchronizeAnnotationSuccess(data) {
   return {

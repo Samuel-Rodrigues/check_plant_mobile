@@ -15,14 +15,10 @@ import {format} from 'date-fns';
 
 import {
   createAnnotation,
-  endSynchronization,
   deleteAllAnnotation,
-  startingSynchronization,
   synchronizeAnnotationSuccess,
 } from '../../store/modules/annotation/actions';
-
 import api from '../../service/api';
-
 import {
   styles,
   ContainerCallout,
@@ -30,13 +26,12 @@ import {
   DateCallout,
   Menu,
 } from './styles';
-
 import MyModal from '../../components/Modal/index';
+import ModalLoading from '../../components/Loading/index';
 
 function Dashboard({navigation}) {
   const annotations = useSelector((state) => state.annotation.annotations);
-  const [notPosted, setNotPosted] = useState(0);
-
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
   const dispatch = useDispatch();
 
   navigation.setOptions({
@@ -56,18 +51,6 @@ function Dashboard({navigation}) {
   useEffect(() => {
     getLocationAllPlatform();
   }, []);
-
-  useEffect(() => {
-    let count = 0;
-
-    annotations.forEach((element) => {
-      if (element.post === false) {
-        count++;
-      }
-    });
-    setNotPosted(count);
-    console.tron.log(notPosted);
-  }, [annotations]);
 
   function getLocationAllPlatform() {
     if (Platform.OS === 'android') {
@@ -100,29 +83,33 @@ function Dashboard({navigation}) {
   }
 
   function synchronize() {
+    let count = 0;
     annotations.map(async function (annotation) {
       if (!annotation.post) {
-        dispatch(startingSynchronization());
+        setLoadingSpinner(true);
+        count = count + 1;
         try {
           await api.post(null, annotation, {
             params: {
-              email_key: 'carlossamuel.rodrigues@gmail.com',
+              email_key: 'rodrigues@gmail.com',
             },
           });
           dispatch(synchronizeAnnotationSuccess(annotation));
+          setLoadingSpinner(false);
         } catch (err) {
-          console.tron.log('erro', err);
+          setLoadingSpinner(false);
           Alert.alert(
             'Erro ao sincronizar',
             'Conecte a internet para sincronizar. Não se preocupe, suas anotações estão salvas no seu dispositivo',
           );
-          dispatch(endSynchronization());
         }
-      } else {
-        Alert.alert('Info', 'Não há nada para sincronizar =) ');
       }
     });
-    dispatch(endSynchronization());
+    if (count <= 0) {
+      // Alert.alert('Tudo certo', 'Suas anotações já estão sincronizadas');
+    } else {
+      //Alert.alert('Sincronizado', `${count} anotação(s) sincronizada(s)`);
+    }
   }
 
   function create(annotatioN) {
@@ -164,6 +151,7 @@ function Dashboard({navigation}) {
   };
   return (
     <View style={styles.container}>
+      {loadingSpinner ? <ModalLoading spinner={true} /> : <></>}
       <MapView style={styles.map} region={position}>
         {annotations.map((annotation) => {
           return (
@@ -185,7 +173,6 @@ function Dashboard({navigation}) {
           );
         })}
       </MapView>
-
       <Menu>
         <TouchableOpacity
           style={styles.locationButton}

@@ -24,8 +24,9 @@ export const success = (msg) =>
 
 export function loading(status) {
   if (status) {
-    Toast.showLoading('Carregando...');
+    Toast.showLoading('Sincronização em andamento...');
   } else {
+    console.tron.log('FECHAR TOAST');
     Toast.hide();
   }
 }

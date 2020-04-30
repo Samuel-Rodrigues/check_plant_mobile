@@ -9,16 +9,18 @@ const INITIAL_STATE = {
 
 export default function annotation(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case '@annotation/STARTING_SYNCHRONIZATION':
+    /* case '@annotation/STARTING_SYNCHRONIZATION':
       return produce(state, (draft) => {
         draft.synchronizing = true;
+        Toast.loading(true);
       });
 
     case '@annotation/END_SYNCHRONIZATION':
       return produce(state, (draft) => {
+        Toast.loading(false);
         draft.synchronizing = false;
       });
-
+*/
     case '@annotation/SYNCHRONIZE_ANNOTATION_SUCCESS':
       return produce(state, (draft) => {
         draft.annotations.map((annotation) => {

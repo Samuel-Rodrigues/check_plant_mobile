@@ -1,11 +1,22 @@
 import {StyleSheet} from 'react-native';
 import styled from 'styled-components';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+export const TIcon = styled(Icon).attrs({})`
+  color: ${(props) => (props.post ? '#446FEA' : '#A7C410')};
+  margin-left: 10px;
+`;
 
 export const ContainerCallout = styled.View`
-  max-width: 400px;
+  width: auto;
   justify-content: center;
   align-self: center;
   margin: 10px;
+`;
+
+export const Header = styled.View`
+  flex-direction: row;
+  justify-content: center;
 `;
 
 export const DateCallout = styled.Text`
@@ -15,7 +26,9 @@ export const DateCallout = styled.Text`
 `;
 
 export const TextCallout = styled.Text`
-  font-size: 14px;
+  width: 300px;
+  font-size: 12px;
+  margin: 5px 10px;
 `;
 
 export const Menu = styled.View`
@@ -36,9 +49,9 @@ export const styles = StyleSheet.create({
   locationButton: {
     backgroundColor: '#A7C410',
     borderRadius: 150,
-    marginTop: -100,
-    width: 50,
-    height: 50,
+    marginTop: -140,
+    width: 70,
+    height: 70,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
@@ -48,9 +61,9 @@ export const styles = StyleSheet.create({
   syncButton: {
     backgroundColor: '#446FEA',
     borderRadius: 150,
-    marginTop: -100,
-    width: 50,
-    height: 50,
+    marginTop: -140,
+    width: 70,
+    height: 70,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',

@@ -10,11 +10,9 @@ export default function annotation(state = INITIAL_STATE, action) {
   switch (action.type) {
     case '@annotation/SYNCHRONIZE_ANNOTATION_SUCCESS':
       return produce(state, (draft) => {
-        draft.annotations.map((annotation) => {
-          if (annotation.datetime === action.payload.datetime) {
-            annotation.post = true;
-          }
-        });
+        let index = state.annotations.indexOf(action.payload);
+
+        draft.annotations[index].post = true;
       });
 
     case '@annotation/CREATE':

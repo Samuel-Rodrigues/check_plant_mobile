@@ -9,11 +9,13 @@ export const Container = styled.KeyboardAvoidingView.attrs({
 })`
   flex: 1;
   margin-top: 60px;
+  align-items: center;
   justify-content: center;
   padding: 0 10px;
 `;
 
 export const Card = styled.View`
+  width: 350px;
   background: #eee;
   border-radius: 8px;
   height: auto;
@@ -26,17 +28,19 @@ export const Title = styled.Text`
 `;
 
 export const Body = styled.View`
+  align-items: center;
   min-height: 100px;
   align-self: center;
-  margin-top: 20px;
-  padding: 5px 20px;
+  margin-top: 10px;
+  padding: 5px;
 `;
 
 export const TInput = styled(Input)`
-  width: 350px;
+  width: 95%;
   max-height: 200px;
   margin-top: 30px;
   margin-bottom: 60px;
+  padding: 10px 10px;
 `;
 
 export const Footer = styled.View`

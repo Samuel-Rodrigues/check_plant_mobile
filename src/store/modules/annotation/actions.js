@@ -11,10 +11,3 @@ export function createAnnotation(data) {
     payload: data,
   };
 }
-/*
-export function deleteAllAnnotation(data) {
-  return {
-    type: '@annotation/DELETE',
-  };
-}
-*/

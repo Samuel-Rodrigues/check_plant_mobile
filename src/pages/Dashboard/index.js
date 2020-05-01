@@ -23,13 +23,15 @@ import {
   ContainerCallout,
   TextCallout,
   DateCallout,
+  Header,
+  TIcon,
   Menu,
 } from './styles';
 import MyModal from '../../components/Modal/index';
 import ModalLoading from '../../components/Loading/index';
 
 function Dashboard({navigation}) {
-  const annotations = useSelector((state) => state.annotation.annotations);
+  const {annotations} = useSelector((state) => state.annotation);
 
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const dispatch = useDispatch();
@@ -90,7 +92,7 @@ function Dashboard({navigation}) {
         try {
           await api.post(null, annotation, {
             params: {
-              email_key: 'carlossamuel.rodrigues@gmail.com',
+              email_key: 'samuel4rodrigues@gmail.com',
             },
           });
           dispatch(synchronizeAnnotationSuccess(annotation));
@@ -106,13 +108,11 @@ function Dashboard({navigation}) {
     });
     if (count <= 0) {
       Alert.alert('Tudo certo', 'Não há nada para sincronizar');
-      console.log('LISTA ', annotations);
     }
   }
 
   function create(annotatioN) {
     getLocation();
-
     const newAnnotation = {
       annotation: annotatioN,
       latitude: position.latitude,
@@ -120,7 +120,6 @@ function Dashboard({navigation}) {
       datetime: format(new Date(), 'yyyy/MM/dd HH:mm:ss'),
       post: false,
     };
-
     dispatch(createAnnotation(newAnnotation));
   }
 
@@ -150,30 +149,38 @@ function Dashboard({navigation}) {
     <View style={styles.container}>
       {loadingSpinner ? <ModalLoading spinner={true} /> : <></>}
       <MapView style={styles.map} region={position}>
-        {annotations.map((annotation) => {
-          return (
-            <Marker
-              key={annotation.datetime}
-              coordinate={{
-                latitude: annotation.latitude,
-                longitude: annotation.longitude,
-              }}
-              title={annotation.datetime}
-              pinColor={!annotation.post ? pinColorGreen : pinColorGray}>
-              <Callout>
-                <ContainerCallout>
-                  <DateCallout>
-                    {format(
-                      new Date(annotation.datetime),
-                      "dd/MM/yy - 'às' HH:mm:ss 'horas'",
-                    )}
-                  </DateCallout>
-                  <TextCallout>{annotation.annotation}</TextCallout>
-                </ContainerCallout>
-              </Callout>
-            </Marker>
-          );
-        })}
+        {annotations &&
+          annotations.map((annotation) => {
+            return (
+              <Marker
+                key={annotation.datetime}
+                coordinate={{
+                  latitude: annotation.latitude,
+                  longitude: annotation.longitude,
+                }}
+                title={annotation.datetime}
+                pinColor={!annotation.post ? pinColorGreen : pinColorGray}>
+                <Callout>
+                  <ContainerCallout>
+                    <Header>
+                      <DateCallout>
+                        {format(
+                          new Date(annotation.datetime),
+                          "dd/MM/yyyy - 'Às' HH:mm:ss 'Horas'",
+                        )}
+                      </DateCallout>
+                      <TIcon
+                        post={annotation.post}
+                        name={annotation.post ? 'done-all' : 'done'}
+                        size={18}
+                      />
+                    </Header>
+                    <TextCallout>{annotation.annotation}</TextCallout>
+                  </ContainerCallout>
+                </Callout>
+              </Marker>
+            );
+          })}
       </MapView>
       <Menu>
         <TouchableOpacity
@@ -181,14 +188,14 @@ function Dashboard({navigation}) {
           onPress={() => {
             toggleModal();
           }}>
-          <Icon name="add-location" color={'#fff'} size={30} />
+          <Icon name="add-location" color={'#fff'} size={45} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.syncButton}
           onPress={() => {
             synchronize();
           }}>
-          <Icon name="sync" color={'#fff'} size={30} />
+          <Icon name="sync" color={'#fff'} size={45} />
         </TouchableOpacity>
       </Menu>
       <MyModal

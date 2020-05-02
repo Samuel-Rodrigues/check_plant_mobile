@@ -15,7 +15,7 @@ export const Container = styled.KeyboardAvoidingView.attrs({
 `;
 
 export const Card = styled.View`
-  width: 350px;
+  width: 330px;
   background: #eee;
   border-radius: 8px;
   height: auto;

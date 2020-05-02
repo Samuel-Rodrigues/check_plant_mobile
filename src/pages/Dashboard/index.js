@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   Alert,
+  Image,
   PermissionsAndroid,
   Platform,
 } from 'react-native';
@@ -21,6 +22,7 @@ import api from '../../service/api';
 import {
   styles,
   ContainerCallout,
+  TextView,
   TextCallout,
   DateCallout,
   Header,
@@ -44,12 +46,7 @@ function Dashboard({navigation}) {
     title: '',
   });
 
-  const [position, setPosition] = useState({
-    latitude: -3.7497319,
-    longitude: -38.5513689,
-    latitudeDelta: 0.0042,
-    longitudeDelta: 0.042,
-  });
+  const [position, setPosition] = useState();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -66,20 +63,25 @@ function Dashboard({navigation}) {
   }
 
   function getLocation() {
-    Geolocation.getCurrentPosition(
+    Geolocation.watchPosition(
       (position) => {
         const {latitude, longitude} = position.coords;
         setPosition({
           latitude,
           longitude,
           latitudeDelta: 0.0042,
-          longitudeDelta: 0.092,
+          longitudeDelta: 0.0042,
         });
       },
       (error) => {
         console.log(error.code, error.message);
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      {
+        enableHighAccuracy: true,
+        timeout: 1500,
+        maximumAge: 1000,
+        distanceFilter: 0,
+      },
     );
   }
 
@@ -92,7 +94,7 @@ function Dashboard({navigation}) {
         try {
           await api.post(null, annotation, {
             params: {
-              email_key: 'samuel4rodrigues@gmail.com',
+              email_key: 'carlossamuel.rodrigues@gmail.com',
             },
           });
           dispatch(synchronizeAnnotationSuccess(annotation));
@@ -148,40 +150,66 @@ function Dashboard({navigation}) {
   return (
     <View style={styles.container}>
       {loadingSpinner ? <ModalLoading spinner={true} /> : <></>}
-      <MapView style={styles.map} region={position}>
-        {annotations &&
-          annotations.map((annotation) => {
-            return (
-              <Marker
-                key={annotation.datetime}
-                coordinate={{
-                  latitude: annotation.latitude,
-                  longitude: annotation.longitude,
-                }}
-                title={annotation.datetime}
-                pinColor={!annotation.post ? pinColorGreen : pinColorGray}>
-                <Callout>
-                  <ContainerCallout>
-                    <Header>
-                      <DateCallout>
-                        {format(
-                          new Date(annotation.datetime),
-                          "dd/MM/yyyy - 'Às' HH:mm:ss 'Horas'",
-                        )}
-                      </DateCallout>
-                      <TIcon
-                        post={annotation.post}
-                        name={annotation.post ? 'done-all' : 'done'}
-                        size={18}
-                      />
-                    </Header>
-                    <TextCallout>{annotation.annotation}</TextCallout>
-                  </ContainerCallout>
-                </Callout>
-              </Marker>
-            );
-          })}
-      </MapView>
+      {!position ? <ModalLoading spinner={true} locate={true} /> : <></>}
+      {position ? (
+        <MapView
+          style={styles.map}
+          loadingEnabled
+          initialRegion={position}
+          stopPropagation={true}>
+          {annotations &&
+            annotations.map((annotation) => {
+              return (
+                <Marker
+                  key={annotation.datetime}
+                  coordinate={{
+                    latitude: annotation.latitude,
+                    longitude: annotation.longitude,
+                  }}
+                  title={annotation.datetime}
+                  pinColor={!annotation.post ? pinColorGreen : pinColorGray}>
+                  <Callout>
+                    <ContainerCallout>
+                      <Header>
+                        <DateCallout>
+                          {format(
+                            new Date(annotation.datetime),
+                            "dd/MM/yyyy - 'Às' HH:mm:ss 'Horas'",
+                          )}
+                        </DateCallout>
+                        <TIcon
+                          post={annotation.post}
+                          name={annotation.post ? 'done-all' : 'done'}
+                          size={18}
+                        />
+                      </Header>
+                      <View>
+                        <TextView>
+                          <TextCallout>{annotation.annotation}</TextCallout>
+                        </TextView>
+                      </View>
+                    </ContainerCallout>
+                  </Callout>
+                </Marker>
+              );
+            })}
+          <Marker coordinate={position} stopPropagation={true}>
+            <Image
+              source={require('../../assets/gps-device.png')}
+              style={{
+                height: 45,
+                width: 35,
+                borderColor: '#999',
+                borderWidth: 1,
+                borderRadius: 15,
+              }}
+            />
+          </Marker>
+        </MapView>
+      ) : (
+        <></>
+      )}
+
       <Menu>
         <TouchableOpacity
           style={styles.locationButton}

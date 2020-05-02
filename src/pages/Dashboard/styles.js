@@ -7,14 +7,12 @@ export const TIcon = styled(Icon).attrs({})`
   margin-left: 10px;
 `;
 
-export const ContainerCallout = styled.View`
-  width: auto;
-  justify-content: center;
-  align-self: center;
-  margin: 10px;
+export const ContainerCallout = styled.SafeAreaView`
+  flex: 1;
 `;
 
 export const Header = styled.View`
+padding: 10px
   flex-direction: row;
   justify-content: center;
 `;
@@ -25,8 +23,15 @@ export const DateCallout = styled.Text`
   margin-bottom: 5px;
 `;
 
+export const TextView = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: true,
+  contentContainerStyle: {padding: 20},
+})`
+  align-self: stretch;
+`;
+
 export const TextCallout = styled.Text`
-  width: 300px;
+  max-width: 300px;
   font-size: 12px;
   margin: 5px 10px;
 `;

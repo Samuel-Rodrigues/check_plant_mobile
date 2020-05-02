@@ -13,6 +13,7 @@ type Props = {};
 export default class ModalLoading extends Component<Props> {
   state = {
     spinner: this.props.spinner,
+    locate: this.props.locate,
   };
 
   render() {
@@ -20,12 +21,13 @@ export default class ModalLoading extends Component<Props> {
       <View style={styles.container}>
         <Spinner
           visible={this.state.spinner}
-          textContent={'Sincronização em andamento...'}
+          textContent={
+            this.state.locate
+              ? 'Buscando sua localização'
+              : 'Sincronização em andamento...'
+          }
           textStyle={styles.spinnerTextStyle}
         />
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
       </View>
     );
   }

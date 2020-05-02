@@ -40,10 +40,10 @@ Pinos do Mapa:
 - ⚛️ **Styled Components** - Biblioteca Javascript pra estilizar componentes
 - 📄 **Axios** - Biblioteca Javascript para fazer requisições http
 - 📄 **date-fns** - Formatar datas
-- 📄 **react-native-geolocation-service** Lib para ajudar em coordenatas
+- 📄 **react-native-geolocation-service** Lib para ajudar em coordenadas
 - 📄 **Maps** Bibioteca para utlizar o maps do dispositivo
 - 📄 **react-redux** Biblioteca para usar um estado global no React
-- 📄 **redux-persist** Biblioteca para usar o banco de dados local e armazeram um estado do redux
+- 📄 **redux-persist** Biblioteca para usar o banco de dados local e armazera um estado do redux
 ... entre outras.
 
 ## :camera: Demonstração

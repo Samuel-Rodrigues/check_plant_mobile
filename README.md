@@ -45,3 +45,7 @@ Pinos do Mapa:
 - 📄 **react-redux** Biblioteca para usar um estado global no React
 - 📄 **redux-persist** Biblioteca para usar o banco de dados local e armazeram um estado do redux
 ... entre outras.
+
+## :camera: Demonstração
+<h1 align="center"> <img alt="resultado" src="https://github.com/Samuel-Rodrigues/check_plant_mobile/blob/master/checkPlantGIF.gif"/>
+</h1>

@@ -1,5 +1,5 @@
 <h3 align="center">
-  Esse projeto faz parte de um teste utilizando React Native
+  Feito com ❤️ para CheckPlant
 </h3>
 
 ## :rocket: Sobre o desafio

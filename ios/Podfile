@@ -39,6 +39,9 @@ target 'check_plant_mobile' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+
+  pod 'RNExitApp', :path => '../node_modules/react-native-exit-app'
+
   target 'check_plant_mobileTests' do
     inherit! :search_paths
     # Pods for testing

@@ -12,7 +12,7 @@ export const ContainerCallout = styled.SafeAreaView`
 `;
 
 export const Header = styled.View`
-padding: 10px
+  padding: 10px;
   flex-direction: row;
   justify-content: center;
 `;
@@ -46,11 +46,21 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  SpinnerText: {
+    color: '#fff',
+  },
   map: {
     height: '100%',
     width: '100%',
   },
-
+  markerPosition: {
+    backgroundColor: '#446FEA',
+    height: 45,
+    width: 35,
+    borderColor: '#999',
+    borderWidth: 2,
+    borderRadius: 20,
+  },
   locationButton: {
     backgroundColor: '#A7C410',
     borderRadius: 150,

@@ -1,8 +1,4 @@
-<h3 align="center">
-  Feito com ❤️ para CheckPlant
-</h3>
-
-## :rocket: Sobre o desafio
+## :rocket: Sobre o projeto
 
 Criar um app utilizando a plataforma React Native com as seguintes características:
 <p>
